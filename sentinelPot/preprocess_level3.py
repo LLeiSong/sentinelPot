@@ -614,24 +614,24 @@ def s2_wasp(tile_id, config, logger=None):
                                      format(centered_date, '%Y%m%d'), half_time)
                 if _run_cmd(cmd, logger):
                     if logger is None:
-                        print("Finish wasp for tile for {} between {} and {}", tile_id, d1, d2)
+                        print("Finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                     else:
-                        logger.warning("Finish wasp for tile for {} between {} and {}", tile_id, d1, d2)
+                        logger.warning("Finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                 else:
                     if logger is None:
-                        print("Fail to finish wasp for tile for {} between {} and {}", tile_id, d1, d2)
+                        print("Fail to finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                     else:
-                        logger.warning("Fail to finish wasp for tile for {} between {} and {}", tile_id, d1, d2)
+                        logger.warning("Fail to finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                 if exists(tmp_wasp_path):
                     shutil.rmtree(tmp_wasp_path)
             else:
                 print('No local mode support yet.')
         else:
             if logger is None:
-                print("There is no atmospheric corrected tile for {} between {} and {}", tile_id, d1, d2)
+                print("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
             else:
-                logger.warning("There is no atmospheric corrected tile for {} between {} and {}", tile_id, d1, d2)
-            sys.exit("There is no atmospheric corrected tile for {} between {} and {}", tile_id, d1, d2)
+                logger.warning("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
+            sys.exit("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
 
 
 def s2_wasp_batch(config_path):
