@@ -1,0 +1,4 @@
+.idea/
+.DS_Store
+sentinelPot/config_main.yaml
+sentinelPot/__pycache__/*

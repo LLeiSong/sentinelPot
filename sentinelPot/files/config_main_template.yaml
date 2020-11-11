@@ -1,0 +1,97 @@
+# Main config for the repo
+dirs:
+  dst_dir:
+  # The prefix of dir_clip and dir_ard
+  dir_clip:
+  dir_ard:
+  dir_coefs:
+  log_dir:
+  download_path:
+  processed_path:
+  level3_processed_path:
+parallel:
+  # the number of threads for parallel
+  threads_number: default
+# User set for peps
+peps:
+  user:
+  password:
+# User set for scihub
+sci_hub:
+  user:
+  password:
+# Sentinel query related variables
+sentinel:
+  # The path of geojson of tiles to query
+  # there must be a column named tile to store the tile id
+  geojson:
+  # town name (pick one which is not too frequent to avoid confusions)
+  location:
+  # [lat, lon]
+  point:
+  # [latmin, latmax, lonmin, lonmax]
+  bbox:
+  # Sentinel-2 tile number
+  tile:
+  # the date interval for downloading, fmt('2017-10-01')
+  date_start:
+  date_end:
+  # platform of sentinel, 'S1', 'S2', 'S2ST', 'S3'
+  platformname: Sentinel-1
+  # the following two for sentinel-1 only
+  producttype: GRD
+  sensoroperationalmode: IW
+  orbit:
+  # S1A,S1B,S2A,S2B,S3A,S3B
+  satellite:
+  # Maximum cloud coverage for sentinel-2
+  clouds:
+  # Path for search catalog json
+  catalog_json:
+  # If download the imagery and download path
+  download: True
+  download_path:
+  # Extract zipfile or not
+  extract: False
+  # Work on windows machine or not
+  windows: False
+gpt:
+  # the path of SNAP GPT
+  gpt_path: /Applications/snap/bin/gpt
+  # the path of xml to be used in SNAP GPT
+  xml_path: files/S1_GRD_preprocessing.xml
+# For Sentinel-1 harmonic regression
+harmonic:
+  gcs_rec: 0.000025
+  # the flag of reading local files or not
+  if_local: false
+  # only used if if_local is true
+  local_path: data/s1_preprocessed
+  # the polarizations of sentinel-1 GRD
+  polarizations: ["VH", "VV"]
+  # Filter parameters
+  kernel: 3
+  iteration: 3
+  eps: 3
+  # Harmonics parameters
+  harmonic_frequency: 365
+  harmonic_pairs: 2
+# For sentinel-2 Fmask cloud detection
+sen2cor:
+  # the path of sen2cor
+  sen2cor_path:
+fmask:
+  # use docker to run Fmask or not
+  # some machines could install Fmask directly,
+  # some have to use docker to run it.
+  docker: true
+  # If you don't use docker, set the following two paths correctly
+  mc_root: /usr/local/MATLAB/MATLAB_Runtime/v96
+  fmask_path: /usr/GERS/Fmask_4_2/application/run_Fmask_4_2.sh
+  # some parameters for fmask
+  cloudprobthreshold: 15
+  cloudbufferdistance: 6
+  shadowbufferdistance: 6
+wasp:
+  docker: True
+
