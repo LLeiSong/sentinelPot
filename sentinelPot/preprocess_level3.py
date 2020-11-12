@@ -437,7 +437,7 @@ def s1_harmonic_each(tile_index, config_path, logger,
     #     string = f.read()
     # func = STAP(string, "func")
     # func.gather_image(tile_index, config_path)
-    cmd = 'Rscript {} -i {} -d {} -n {} -c {}'\
+    cmd = 'Rscript {} -i {} -d {} -n {} -c {}' \
         .format(join(os.path.dirname(__file__), 's1_gather_tile_cli.R'),
                 str(tile_index), os.path.dirname(__file__), thread_clip, config_path)
     _run_cmd(cmd, logger)
@@ -583,9 +583,16 @@ def s2_wasp(tile_id, config, logger=None):
     fnames_all = os.listdir(processed_path)
     fnames_all = list(filter(lambda fname: os.path.isdir(join(processed_path, fname)), fnames_all))
     safe_path = list(filter(lambda fname: tile_id in fname, fnames_all))
-    for i in range(len(time_series) - 1):
-        d1 = datetime.strptime(str(time_series[i]), "%Y-%m-%d")
-        d2 = datetime.strptime(str(time_series[i + 1]), "%Y-%m-%d")
+    for i in range(len(time_series)):
+        if i == len(time_series) - 1:
+            d1 = datetime.strptime(str(time_series[i]), "%Y-%m-%d")
+            yr_old = re.search('[0-9]{4}', str(time_series[0])).group(0)
+            yr = str(int(yr_old) + 1)
+            d2_str = str(time_series[0]).replace(yr_old, yr)
+            d2 = datetime.strptime(d2_str, "%Y-%m-%d") - timedelta(days=1)
+        else:
+            d1 = datetime.strptime(str(time_series[i]), "%Y-%m-%d")
+            d2 = datetime.strptime(str(time_series[i + 1]), "%Y-%m-%d")
         safe_path_sub = list(filter(lambda fname:
                                     d1 <= datetime.strptime(re.search("[0-9]{8}", fname).group(0), "%Y%m%d") < d2,
                                     safe_path))
@@ -616,12 +623,12 @@ def s2_wasp(tile_id, config, logger=None):
                     if logger is None:
                         print("Finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                     else:
-                        logger.warning("Finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
+                        logger.info("Finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                 else:
                     if logger is None:
                         print("Fail to finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                     else:
-                        logger.warning("Fail to finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
+                        logger.error("Fail to finish wasp for tile for {} between {} and {}".format(tile_id, d1, d2))
                 if exists(tmp_wasp_path):
                     shutil.rmtree(tmp_wasp_path)
             else:
@@ -630,7 +637,8 @@ def s2_wasp(tile_id, config, logger=None):
             if logger is None:
                 print("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
             else:
-                logger.warning("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
+                logger.warning(
+                    "There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
             sys.exit("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
 
 
