@@ -849,7 +849,7 @@ def peps_maja_downloader(write_dir, email, password, log_name, logger):
 
     statusFileName = log_name.replace('log', 'stat')
     if not (os.path.exists(os.path.dirname(statusFileName))):
-        os.mkdir(write_dir)
+        os.mkdir(os.path.dirname(statusFileName))
     getURL(urlStatus, statusFileName, email, password, logger)
 
     urls = []
