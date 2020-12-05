@@ -2,13 +2,22 @@
 dirs:
   dst_dir:
   # The prefix of dir_clip and dir_ard
-  dir_clip:
-  dir_ard:
-  dir_coefs:
-  log_dir:
-  download_path:
-  processed_path:
-  level3_processed_path:
+  dir_clip: temp
+  dir_ard: temp_ard
+  # The folder for harmonic coefficients
+  dir_coefs: sentinel1_hr_coefs
+  # The folder for script logs
+  log_dir: logs
+  # The folder for peps MAJA log
+  maja_log: maja_logs
+  # The folder for download
+  download_path: sentinel2_level1
+  # The folder for level-2 processed images
+  # Preprocess of S1, and atmospheric correction of S2 (fmask or maja)
+  processed_path: sentinel2_level2
+  # The folder for level-3
+  # Harmonic regression of S1, WASP of S2
+  level3_processed_path: sentinel2_level3
 parallel:
   # the number of threads for parallel
   threads_number: default
@@ -47,7 +56,9 @@ sentinel:
   # Maximum cloud coverage for sentinel-2
   clouds:
   # Path for search catalog json
-  catalog_json:
+  # Full path in order to run this part separately
+  catalog_json: /Volumes/wildebeest/gcam/catalogs/s1_footprints_gcam_mu.geojson
+  search_table: /Volumes/wildebeest/gcam/catalogs/s1_search_table_gcam_mu.csv
   # If download the imagery and download path
   download: True
   download_path:
@@ -76,6 +87,8 @@ harmonic:
   # Harmonics parameters
   harmonic_frequency: 365
   harmonic_pairs: 2
+  # Keep the moderate results
+  keep_mid: False
 # For sentinel-2 Fmask cloud detection
 sen2cor:
   # the path of sen2cor
@@ -94,4 +107,5 @@ fmask:
   shadowbufferdistance: 6
 wasp:
   docker: True
-
+  # Time interval to run WASP
+  time_series: ['2019-03-01', '2019-05-31', '2019-10-30']
