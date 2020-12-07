@@ -984,6 +984,7 @@ def s2_maja_process(options, stage=False):
     prod = list(set(download_dict.keys()))
     tiles_dup = list(map(lambda x: re.search("T[0-9]{2}[A-Z]{3}", x).group(0), prod))
     tiles = list(set(map(lambda x: re.search("T[0-9]{2}[A-Z]{3}", x).group(0), prod)))
+    tiles.sort()
     tiles = list(_divide_chunks(tiles, 10))
 
     # Request maja
