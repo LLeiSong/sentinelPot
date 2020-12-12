@@ -873,7 +873,13 @@ def peps_maja_downloader(write_dir, email, password, log_name, logger):
                 logger.info("Skipping {}: already on disk".format(L2AName))
             else:
                 logger.info("downloading %s" % L2AName)
-                downloadFile(url, "%s/%s" % (write_dir, L2AName), email, password)
+                try:
+                    downloadFile(url, "%s/%s" % (write_dir, L2AName), email, password)
+                except:
+                    try:
+                        downloadFile(url, "%s/%s" % (write_dir, L2AName), email, password)
+                    except:
+                        logger.error('Failed to download {} twice.'.format(url))
         return True
     else:
         return False
