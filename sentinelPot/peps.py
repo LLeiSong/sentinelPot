@@ -876,9 +876,12 @@ def peps_maja_downloader(write_dir, email, password, log_name, logger):
                 try:
                     downloadFile(url, "%s/%s" % (write_dir, L2AName), email, password)
                 except:
+                    # Whatever error, retry within 30s.
+                    time.sleep(30)
                     try:
                         downloadFile(url, "%s/%s" % (write_dir, L2AName), email, password)
                     except:
+                        # Keep track of failed tiles, so could do that later manually.
                         logger.error('Failed to download {} twice.'.format(url))
         return True
     else:
