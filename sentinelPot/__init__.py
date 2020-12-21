@@ -12,6 +12,7 @@ from .preprocess_level3 import harmonic_fitting, \
     s2_wasp_batch
 from .setting import generate_config_file, sen2cor_install, \
     fmask_docker_install, wasp_docker_install
+from .fixed_thread_pool_executor import FixedThreadPoolExecutor
 
 __version__ = '0.1.0'
 __author__ = 'Lei Song'

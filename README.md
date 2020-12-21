@@ -397,6 +397,8 @@ We warmly welcome others to make pull request to be a contributor.
 
 ## Reference work
 
+Many thanks to these reference work that we build upon and give full credit to them for the corresponding parts:
+
 [Sentinel-2 GRD xml](https://github.com/ffilipponi/Sentinel-1_GRD_preprocessing)
 
 [WASP](https://github.com/CNES/WASP)
@@ -406,3 +408,5 @@ We warmly welcome others to make pull request to be a contributor.
 [maja_peps](https://github.com/olivierhagolle/maja_peps)
 
 [peps_download](https://github.com/olivierhagolle/peps_download)
+
+[Threading with fixed pool tool](https://gist.github.com/tliron/81dd915166b0bfc64be08b4f8e22c835)
