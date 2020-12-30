@@ -108,4 +108,5 @@ fmask:
 wasp:
   docker: True
   # Time interval to run WASP
-  time_series: ['2019-03-01', '2019-05-31', '2019-10-30']
+  # It has include the start date, the interim dates, and the end date.
+  time_series: ['2019-03-01', '2019-06-01', '2019-11-01', '2020-03-01']
