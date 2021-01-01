@@ -468,7 +468,7 @@ def s1_harmonic_each(tile_index, config_path, logger,
 
 def s1_harmonic_batch(config_path, gf_out_format='ENVI',
                       initial=False, parallel_tile=False,
-                      thread_clip=2):
+                      big_ram=False, thread_clip=2):
     """Batch fit harmonic regression coefficients.
 
     Args:
@@ -476,7 +476,8 @@ def s1_harmonic_batch(config_path, gf_out_format='ENVI',
         gf_out_format (str); the format of output.
         Now it only supports [ENVI, GTiff].
         initial (bool): if the script is run initially.
-        parallel_tile(bool): if to do parallel over tiles.
+        parallel_tile (bool): if to do parallel over tiles.
+        big_ram (bool): if has big ram to use.
         thread_clip(int): the thread number for clipping.
     """
     config = _load_yaml(config_path)
@@ -524,9 +525,10 @@ def s1_harmonic_batch(config_path, gf_out_format='ENVI',
             else:
                 tile_index = str(tile_index)
             # tile_index = i + 1
-            if harmonic_executor.submit(s1_harmonic_each, tile_index,
-                                        config_path, logger,
-                                        gf_out_format, thread_clip) is True:
+            if harmonic_executor.submit(s1_harmonic_each,
+                                        tile_index, config_path,
+                                        logger, gf_out_format,
+                                        thread_clip, big_ram) is True:
                 success_count = success_count + 1
             else:
                 failure_count = failure_count + 1
@@ -546,7 +548,9 @@ def s1_harmonic_batch(config_path, gf_out_format='ENVI',
             else:
                 tile_index = str(tile_index)
             # tile_index = i + 1
-            s1_harmonic_each(tile_index, config_path, logger, gf_out_format, thread_clip, True)
+            s1_harmonic_each(tile_index, config_path,
+                             logger, gf_out_format,
+                             thread_clip, big_ram)
         logger.info("Sentinel1_harmonic_regression: finished harmonic task; "
                     "the total tile number to be processed is {}."
                     .format(len(sc.footprint['features'])))
@@ -613,7 +617,8 @@ def s2_wasp(tile_id, config, logger=None):
                     os.mkdir(tmp_wasp_path)
                 for each in safe_path_sub:
                     os.mkdir(join(tmp_wasp_path, each))
-                    _copytree(join(processed_path, each), join(tmp_wasp_path, each))
+                    _copytree(join(processed_path, each),
+                              join(tmp_wasp_path, each))
 
                 # Run wasp
                 # get parameters
