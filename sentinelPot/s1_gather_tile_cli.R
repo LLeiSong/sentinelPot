@@ -9,8 +9,8 @@ invisible(suppressMessages(suppressWarnings(
 # Read command inputs
 option_list <- list(
   make_option(c("-i", "--tile_id"),
-              type = "integer", default = NULL,
-              help = "tile id", metavar="number"),
+              type = "character", default = NULL,
+              help = "tile id"),
   make_option(c("-d", "--dirname"),
               type = "character", default = '.',
               help = "the dirname of project"),
