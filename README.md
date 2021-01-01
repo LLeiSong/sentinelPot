@@ -3,7 +3,8 @@ This is a python package to assemble necessary preprocessing steps for sentinel-
 
 ## Introduction
 
-This package is just a package to wrapper necessary steps to preprocess sentinel-1&2 images. 
+This package is just a package to wrap necessary steps to preprocess sentinel-1&2 images. 
+Full credit should be given to the authors of these preprocessing methods.
 
 ### Sentinel-1
 
