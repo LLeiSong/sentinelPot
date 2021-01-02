@@ -528,7 +528,7 @@ def s1_harmonic_batch(config_path, gf_out_format='ENVI',
             if harmonic_executor.submit(s1_harmonic_each,
                                         tile_index, config_path,
                                         logger, gf_out_format,
-                                        thread_clip, big_ram) is True:
+                                        thread_clip) is True:
                 success_count = success_count + 1
             else:
                 failure_count = failure_count + 1
