@@ -689,6 +689,8 @@ def s2_wasp_batch(config_path):
     # Get tile ids
     fnames_all = os.listdir(processed_path)
     fnames_all = list(filter(lambda fname: os.path.isdir(join(processed_path, fname)), fnames_all))
+    if len(fnames_all) == 0:
+        fnames_all = list(filter(lambda fname: fname.endswith('zip'), fnames_all))
     tile_ids = list(set(map(lambda fname: re.search("T[0-9]{2}[A-Z]{3}", fname).group(0), fnames_all)))
 
     # Determine thread number to be used
