@@ -22,7 +22,7 @@ from rpy2.robjects.packages import STAP
 from sklearn.linear_model import Lasso
 from .fixed_thread_pool_executor import FixedThreadPoolExecutor
 from .guided_filter import guided_filter
-from .internal_functions import _run_cmd, _copytree, _load_yaml
+from .internal_functions import _run_cmd, _copytree, _load_yaml, _unzip_file
 from .sentinel_client import SentinelClient
 
 
@@ -582,6 +582,13 @@ def s2_wasp(tile_id, config, logger=None):
         os.mkdir(level3_processed_path)
         logger.info('Create processed path {}.'.format(level3_processed_path))
 
+    # Unzip
+    fnames_all = os.listdir(processed_path)
+    fnames_all = list(filter(lambda fname: join(processed_path, fname).endswith('zip'), fnames_all))
+    zips = list(filter(lambda fname: tile_id in fname, fnames_all))
+    for zip_file in zips:
+        _unzip_file(join(processed_path, zip_file), processed_path)
+
     # Format tile_id
     time_series = config['wasp']['time_series']
     fnames_all = os.listdir(processed_path)
@@ -649,6 +656,10 @@ def s2_wasp(tile_id, config, logger=None):
                 logger.warning(
                     "There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
             sys.exit("There is no atmospheric corrected tile for {} between {} and {}".format(tile_id, d1, d2))
+
+    # Delete unzipped files
+    for each in safe_path:
+        shutil.rmtree(join(processed_path, each))
 
 
 def s2_wasp_batch(config_path):
