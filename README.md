@@ -413,3 +413,8 @@ Many thanks to these reference work that we build upon and give full credit to t
 [peps_download](https://github.com/olivierhagolle/peps_download)
 
 [Threading with fixed pool tool](https://gist.github.com/tliron/81dd915166b0bfc64be08b4f8e22c835)
+
+## Acknowledgement
+
+This package is part of project ["Combining Spatially-explicit Simulation of Animal Movement and Earth Observation to Reconcile Agriculture and Wildlife Conservation"](https://github.com/users/LLeiSong/projects/2).
+This project is funded by NASA FINESST program (award number: 80NSSC20K1640).
