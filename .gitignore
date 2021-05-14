@@ -2,3 +2,4 @@
 .DS_Store
 sentinelPot/config_main.yaml
 sentinelPot/__pycache__/*
+.Rproj.user

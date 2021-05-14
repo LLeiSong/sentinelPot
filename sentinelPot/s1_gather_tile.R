@@ -99,7 +99,7 @@ gather_image <- function(tile_no,
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
                         bg_ratio <- sum(vals == 0) / length(vals)
-                        if (bg_ratio != 1) {
+                        if (bg_ratio < 0.99) {
                                 if (bg_ratio > 0.01){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {title_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
@@ -152,7 +152,7 @@ gather_image <- function(tile_no,
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
                         bg_ratio <- sum(vals == 0)/length(vals)
-                        if (bg_ratio != 1) {
+                        if (bg_ratio < 0.99) {
                                 if (bg_ratio > 0.01){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {title_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
@@ -225,7 +225,7 @@ gather_image <- function(tile_no,
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
                         bg_ratio <- sum(vals==0)/length(vals)
-                        if (bg_ratio != 1) {
+                        if (bg_ratio < 0.99) {
                                 if (bg_ratio > 0.01){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {date_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
@@ -286,7 +286,7 @@ gather_image <- function(tile_no,
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
                         bg_ratio <- sum(vals==0)/length(vals)
-                        if (bg_ratio != 1) {
+                        if (bg_ratio < 0.99) {
                                 if (bg_ratio > 0.01){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {date_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
