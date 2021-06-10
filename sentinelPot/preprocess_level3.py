@@ -42,7 +42,7 @@ def guided_filter_batch(tile_index, config, out_format='ENVI', logger=None):
     dir_ard = config['dirs']['dir_ard']
     dir_ard = "{}_{}".format(dir_ard, str(tile_index))
     if not os.path.isdir(dir_clip):
-        if logger is None:
+        if logger is not None:
             logger.info("No clip generated for tile {}".format(tile_index))
         else:
             print("No clip generated for tile {}".format(tile_index))
