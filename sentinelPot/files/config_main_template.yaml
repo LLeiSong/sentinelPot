@@ -74,10 +74,8 @@ gpt:
 # For Sentinel-1 harmonic regression
 harmonic:
   gcs_rec: 0.000025
-  # the flag of reading local files or not
-  if_local: false
-  # only used if if_local is true
-  local_path: data/s1_preprocessed
+  # the alpha of lasso algorithm
+  alpha: 0.2
   # the polarizations of sentinel-1 GRD
   polarizations: ["VH", "VV"]
   # Filter parameters
