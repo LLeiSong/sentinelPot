@@ -454,7 +454,7 @@ def s1_harmonic_each(tile_index, config_path, logger,
             harmonic_fitting_br(str(tile_index), pol, config)
         else:
             harmonic_fitting(str(tile_index), pol, config)
-        logger.info("Finish guided filter for  {} of tile {}".format(pol, tile_index))
+        logger.info("Finish harmonic fitting for  {} of tile {}".format(pol, tile_index))
 
     # Remove all temporary files
     if not config['harmonic']['keep_mid']:
