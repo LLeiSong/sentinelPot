@@ -93,7 +93,7 @@ gather_image <- function(tile_no,
                                 stop("No path for local imagery!")}
                         # VV
                         rst <- rast(glue("{local_path}/{title_each}.data/{vv_name}"))
-                        rst_crop <- expand(crop(rst, bry_raw), ext(bry_raw))
+                        rst_crop <- extend(crop(rst, bry_raw), ext(bry_raw))
                         rst_crop[is.na(rst_crop)] <- 0
                         
                         ######## Remove artifacts across boundary ########
@@ -146,7 +146,7 @@ gather_image <- function(tile_no,
                         
                         # VH
                         rst <- rast(glue("{local_path}/{title_each}.data/{vh_name}"))
-                        rst_crop <- expand(crop(rst, bry_raw), ext(bry_raw))
+                        rst_crop <- extend(crop(rst, bry_raw), ext(bry_raw))
                         rst_crop[is.na(rst_crop)] <- 0
                         
                         ######## Remove artifacts across boundary ########
@@ -212,7 +212,7 @@ gather_image <- function(tile_no,
                         }
                         rst <- lapply(titles, function(title_each){
                                 rst <- rast(glue("{local_path}/{title_each}.data/{vv_name}"))
-                                rst <- expand(crop(rst, bry_terra), ext(bry_terra))
+                                rst <- extend(crop(rst, bry_terra), ext(bry_terra))
                                 rst[is.na(rst)] <- 0
                                 rst
                         })
@@ -273,7 +273,7 @@ gather_image <- function(tile_no,
                         }
                         rst <- lapply(titles, function(title_each){
                                 rst <- rast(glue("{local_path}/{title_each}.data/{vh_name}"))
-                                rst <- expand(crop(rst, bry_terra), ext(bry_terra))
+                                rst <- extend(crop(rst, bry_terra), ext(bry_terra))
                                 rst[is.na(rst)] <- 0
                                 rst
                         })
