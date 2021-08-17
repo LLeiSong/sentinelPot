@@ -38,6 +38,7 @@ gather_image <- function(tile_no,
         invisible(suppressMessages(suppressWarnings(
                 lapply(PkgNames, require, character.only = T))))
         options(warn = -1)
+        sf::sf_use_s2(FALSE)
         
         # Read config
         config <- yaml.load_file(config_dir)
@@ -98,17 +99,18 @@ gather_image <- function(tile_no,
                         
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
-                        bg_ratio <- sum(vals == 0) / length(vals)
+                        bg_ratio <- sum(vals == 0 | vals < -30) / length(vals)
                         if (bg_ratio < 0.99) {
-                                if (bg_ratio > 0.01){ # condition that image has bg
+                                if (bg_ratio > 0.001){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {title_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
                                         msk <- as.polygons(msk); names(msk) <- 'val'
+                                        msk <- msk[msk$val == 0]
                                         tmp <- tempfile()
                                         writeVector(msk, tmp)
                                         # Move the accident islands from real 0 values
                                         pol <- st_read(tmp, quiet = T) %>% 
-                                                filter(val == 0) %>% st_set_crs(4326)
+                                                st_set_crs(4326)
                                         # pol <- st_cast(pol, 'POINT') %>%
                                         #         st_coordinates() %>% data.frame() %>%
                                         #         filter(X == st_bbox(pol)[1] | X == st_bbox(pol)[3] |
@@ -118,11 +120,11 @@ gather_image <- function(tile_no,
                                         #         st_buffer(-gcs_res * 30) %>% st_as_sf()
                                         pol <- st_cast(pol, 'POLYGON') %>% 
                                                 mutate(area = st_area(.)) %>% 
-                                                arrange(-area) %>% slice(1)  
+                                                arrange(-area) %>% slice(1)
                                         suppressMessages(pol <- st_multipolygon(lapply(st_geometry(pol), 
                                                                                        function(x) x[1])) %>% 
                                                                  st_buffer(-gcs_res * 60) %>% 
-                                                                 st_geometry() %>% st_sf(pol) %>% vect())
+                                                                 st_geometry() %>% st_sf() %>% vect())
                                         crs(pol) <- crs(bry_raw)
                                         try(rst_crop <- mask(rst_crop, pol), silent = T)
                                         suppressMessages(bry <- tiles %>% filter(tile == tile_id) %>% 
@@ -151,16 +153,17 @@ gather_image <- function(tile_no,
                         
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
-                        bg_ratio <- sum(vals == 0)/length(vals)
+                        bg_ratio <- sum(vals == 0 | vals < -30) / length(vals)
                         if (bg_ratio < 0.99) {
-                                if (bg_ratio > 0.01){ # condition that image has bg
+                                if (bg_ratio > 0.001){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {title_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
                                         msk <- as.polygons(msk); names(msk) <- 'val'
+                                        msk <- msk[msk$val == 0]
                                         tmp <- tempfile()
                                         writeVector(msk, tmp)
                                         pol <- st_read(tmp, quiet = T) %>% 
-                                                filter(val == 0) %>% st_set_crs(4326)
+                                                st_set_crs(4326)
                                         # pol <- st_cast(pol, 'POINT') %>%
                                         #         st_coordinates() %>% data.frame() %>%
                                         #         filter(X == st_bbox(pol)[1] | X == st_bbox(pol)[3] |
@@ -174,7 +177,7 @@ gather_image <- function(tile_no,
                                         suppressMessages(pol <- st_multipolygon(lapply(st_geometry(pol), 
                                                                                        function(x) x[1])) %>% 
                                                                  st_buffer(-gcs_res * 60) %>% 
-                                                                 st_geometry() %>% st_sf(pol) %>% vect())
+                                                                 st_geometry() %>% st_sf() %>% vect())
                                         crs(pol) <- crs(bry_raw)
                                         try(rst_crop <- mask(rst_crop, pol), silent = T)
                                         suppressMessages(bry <- tiles %>% filter(tile == tile_id) %>% 
@@ -224,9 +227,9 @@ gather_image <- function(tile_no,
                         
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
-                        bg_ratio <- sum(vals==0)/length(vals)
+                        bg_ratio <- sum(vals == 0 | vals < -30) / length(vals)
                         if (bg_ratio < 0.99) {
-                                if (bg_ratio > 0.01){ # condition that image has bg
+                                if (bg_ratio > 0.001){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {date_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
                                         msk <- as.polygons(msk)
@@ -248,7 +251,7 @@ gather_image <- function(tile_no,
                                         suppressMessages(pol <- st_multipolygon(lapply(st_geometry(pol), 
                                                                                        function(x) x[1])) %>% 
                                                                  st_buffer(-gcs_res * 60) %>% 
-                                                                 st_geometry() %>% st_sf(pol) %>% vect())
+                                                                 st_geometry() %>% st_sf() %>% vect())
                                         crs(pol) <- crs(bry_terra)
                                         try(rst_crop <- mask(rst_crop, pol), silent = T)
                                         suppressMessages(bry <- tiles %>% filter(tile == tile_id) %>% 
@@ -285,9 +288,9 @@ gather_image <- function(tile_no,
                         
                         ######## Remove artifacts across boundary ########
                         vals <- as.matrix(rst_crop)
-                        bg_ratio <- sum(vals==0)/length(vals)
+                        bg_ratio <- sum(vals == 0 | vals < -30) / length(vals)
                         if (bg_ratio < 0.99) {
-                                if (bg_ratio > 0.01){ # condition that image has bg
+                                if (bg_ratio > 0.001){ # condition that image has bg
                                         info(logger, glue("Remove artifacts on boundary for {date_each}."))
                                         msk <- (rst_crop == 0 | rst_crop < (-30))
                                         msk <- as.polygons(msk)
@@ -304,11 +307,11 @@ gather_image <- function(tile_no,
                                         #         st_buffer(-gcs_res * 30) %>% st_as_sf()
                                         pol <- st_cast(pol, 'POLYGON') %>% 
                                                 mutate(area = st_area(.)) %>% 
-                                                arrange(-area) %>% slice(1)  
+                                                arrange(-area) %>% slice(1)
                                         suppressMessages(pol <- st_multipolygon(lapply(st_geometry(pol), 
                                                                                        function(x) x[1])) %>% 
                                                                  st_buffer(-gcs_res * 60) %>% 
-                                                                 st_geometry() %>% st_sf(pol) %>% vect())
+                                                                 st_geometry() %>% st_sf() %>% vect())
                                         crs(pol) <- crs(bry_terra)
                                         try(rst_crop <- mask(rst_crop, pol), silent = T)
                                         suppressMessages(bry <- tiles %>% filter(tile == tile_id) %>% 
