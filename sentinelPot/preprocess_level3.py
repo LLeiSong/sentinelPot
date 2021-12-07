@@ -135,12 +135,13 @@ def _adjust_doy(doys, start, freq):
     return doys
 
 
-def _get_doy(fnames, freq):
+def _get_doy(fnames, freq, start):
     """Get the day of year from a filename.
 
     Args:
         freq (int): the frequency of the year, e.g. 365.
         fnames (list of str): the list of file names.
+        start (string or None): the start date.
 
     Returns:
         numpy.ndarray: an array of DOY.
@@ -152,11 +153,17 @@ def _get_doy(fnames, freq):
     # Get DOY
     doys = list(map(lambda date: _get_date_doy(date), dates))
 
+    if start is None:
+        start_doy = doys[0]
+    else:
+        start_doy = _get_date_doy(datetime.strptime(start, '%Y-%m-%d'))
+
     # Adjust DOY
+    doys = _adjust_doy(doys, start_doy, freq)
     doys_check = copy.copy(doys)
     doys_check.sort()
     if not doys_check == doys:
-        doys = _adjust_doy(doys, doys[0], freq)
+        doys = _adjust_doy(doys, start_doy, freq)
     doys = np.array(doys)
     return doys
 
@@ -246,6 +253,7 @@ def harmonic_fitting(tile_index, pol, config):
     freq = config['harmonic']["harmonic_frequency"]
     num_pair = config['harmonic']["harmonic_pairs"]
     alpha = config['harmonic']["alpha"]
+    start = config['harmonic']["date_start"]
 
     # process
     # Get variables and target
@@ -253,7 +261,7 @@ def harmonic_fitting(tile_index, pol, config):
     fnames = list(filter(lambda fname: (".img" in fname and pol in fname and ".aux.xml" not in fname) |
                                        ('.tif' in fname and pol in fname), fnames))
     fnames = _sort_fnames(fnames)
-    days = _get_doy(fnames, freq)
+    days = _get_doy(fnames, freq, start)
     x = _getVariable(freq, days, 1 + num_pair * 2)
     del days
 
