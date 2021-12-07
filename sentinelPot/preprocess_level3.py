@@ -160,10 +160,6 @@ def _get_doy(fnames, freq, start):
 
     # Adjust DOY
     doys = _adjust_doy(doys, start_doy, freq)
-    doys_check = copy.copy(doys)
-    doys_check.sort()
-    if not doys_check == doys:
-        doys = _adjust_doy(doys, start_doy, freq)
     doys = np.array(doys)
     return doys
 
