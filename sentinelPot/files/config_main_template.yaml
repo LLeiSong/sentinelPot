@@ -73,9 +73,6 @@ gpt:
   xml_path: files/S1_GRD_preprocessing.xml
 # For Sentinel-1 harmonic regression
 harmonic:
-  # The date_start and frequency define the whole time series
-  # The start date of the time series, fmt('2017-10-01')
-  date_start:
   gcs_rec: 0.000025
   # the alpha of lasso algorithm
   alpha: 0.2
@@ -85,6 +82,11 @@ harmonic:
   kernel: 3
   iteration: 3
   eps: 3
+  # The date_start and frequency define the whole time series.
+  # Make sure you did the right calculation on them.
+  # Otherwise, there might be zero or negative DOY at the end.
+  # The start date of the time series, fmt('2017-10-01')
+  date_start:
   # Harmonics parameters
   harmonic_frequency: 365
   harmonic_pairs: 2

@@ -38,6 +38,15 @@ Level-3 process:
 
 Run docker to process WASP to get seasonal syntheses of sentinel-2 imagery. The details are here: [WASP](https://github.com/LLeiSong/waspire).
 
+## Installation
+NOTE: You might want to edit `requirements.txt` before installation if you don't want to change the existing packages on your own machine.
+
+```
+git clone git@github.com:LLeiSong/sentinelPot.git
+cd sentinelPot
+pip install .
+```
+
 ## Config yaml setting
 
 The template of the yaml is as follows:
@@ -118,6 +127,7 @@ gpt:
   xml_path: files/S1_GRD_preprocessing.xml
 # For Sentinel-1 harmonic regression
 harmonic:
+  date_start: '2021-05-01'
   gcs_rec: 0.000025
   # the alpha of lasso algorithm
   alpha: 0.2
@@ -387,6 +397,17 @@ Still, `config` can be got by:
 with open("./config.yaml", 'r') as yaml_file:
        config = yaml.safe_load(yaml_file)
 ```
+
+## Package updates
+
+### sentinelPot 0.1.1
+
+1. Update function `_get_doy` to use a new parameter `start` to adjust the DOY of time series. So the users could define any time interval. 
+2. Add the corresponding parameter in config.yaml: `['harmonic']['date_start']`.
+
+### sentinelPot 0.1.0
+
+The first release of the package.
 
 ## Contributors
 
