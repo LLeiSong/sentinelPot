@@ -16,7 +16,10 @@ from datetime import datetime
 from datetime import timedelta
 from os.path import exists
 from os.path import join
-import gdal
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal
 import numpy as np
 from rpy2.robjects.packages import STAP
 from sklearn.linear_model import Lasso
@@ -624,8 +627,9 @@ def s2_wasp(tile_id, config, logger=None):
                     sys.exit('There is no docker image wasp running. Please use wasp_docker_install to install.')
 
                 # Copy file
-                if not exists(tmp_wasp_path):
-                    os.mkdir(tmp_wasp_path)
+                if exists(tmp_wasp_path):
+                    os.rmdir(tmp_wasp_path)
+                os.mkdir(tmp_wasp_path)
                 for each in safe_path_sub:
                     os.mkdir(join(tmp_wasp_path, each))
                     _copytree(join(processed_path, each),

@@ -7,7 +7,10 @@ Maintainer: Lei Song (lsong@clarku.edu)
 import os
 import sys
 import cv2
-import gdal
+try:
+    import gdal
+except ImportError:
+    from osgeo import gdal
 import numpy as np
 from os.path import basename
 
@@ -91,9 +94,14 @@ def guided_filter(src_path, ksize, eps, dst_dir, out_format='ENVI'):
         if img.GetRasterBand(i + 1).GetNoDataValue() is not None:
             novalue = np.float32(img.GetRasterBand(i + 1).GetNoDataValue())
             band_raw = np.float32(img.GetRasterBand(i + 1).ReadAsArray())
-            band = np.where(band_raw == novalue, -9999, band_raw)
-            band_filter = _guidedfilter(band, band, ksize, eps)
-            out = np.where(band_raw == novalue, band_raw, band_filter)
+            if np.isnan(img.GetRasterBand(i + 1).GetNoDataValue()):
+                band = np.where(np.isnan(band_raw), -9999, band_raw)
+                band_filter = _guidedfilter(band, band, ksize, eps)
+                out = np.where(np.isnan(band_raw), band_raw, band_filter)
+            else:
+                band = np.where(band_raw == novalue, -9999, band_raw)
+                band_filter = _guidedfilter(band, band, ksize, eps)
+                out = np.where(band_raw == novalue, band_raw, band_filter)
             outband = out_data.GetRasterBand(i + 1)
             # If need to set No Data Value
             outband.SetNoDataValue(img.GetRasterBand(i + 1).GetNoDataValue())
