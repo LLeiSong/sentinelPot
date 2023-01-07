@@ -91,9 +91,13 @@ def guided_filter(src_path, ksize, eps, dst_dir, out_format='ENVI'):
     else:
         sys.exit('Not support out format. Must be [ENVI, GTiff].')
     for i in range(n_band):
+        novalue = np.float32(img.GetRasterBand(i + 1).GetNoDataValue())
+        band_raw = np.float32(img.GetRasterBand(i + 1).ReadAsArray())
+        # Remove inf
+        band_raw = np.where(np.isinf(band_raw),
+                            img.GetRasterBand(i + 1).GetNoDataValue(),
+                            band_raw)
         if img.GetRasterBand(i + 1).GetNoDataValue() is not None:
-            novalue = np.float32(img.GetRasterBand(i + 1).GetNoDataValue())
-            band_raw = np.float32(img.GetRasterBand(i + 1).ReadAsArray())
             if np.isnan(img.GetRasterBand(i + 1).GetNoDataValue()):
                 band = np.where(np.isnan(band_raw), -9999, band_raw)
                 band_filter = _guidedfilter(band, band, ksize, eps)
